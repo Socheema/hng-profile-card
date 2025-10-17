@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>HNG Profile Card - Internship Task</title>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <article data-testid="test-profile-card" id="main-content">
+      <div class="profile-header">
+        <figure>
+          <img
+            src="/images/profile.jpg"
+            alt="Profile photo of John Doe, Frontend Developer"
+            data-testid="test-user-avatar"
+            onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face'"
+            loading="lazy"
+          />
+        </figure>
+
+        <header>
+          <h1 data-testid="test-user-name">Azubuike Chima</h1>
+          <div class="time-display">
+            <span data-testid="test-user-time" class="current-time"></span> ms
+            <span class="time-updating" aria-live="polite"></span>
+          </div>
+        </header>
+      </div>
+
+      <div class="profile-content">
+        <p data-testid="test-user-bio">
+          Passionate frontend developer with 3+ years of experience creating
+          accessible, responsive web applications. Specializing in modern
+          JavaScript, CSS Grid/Flexbox, and React. Committed to writing clean,
+          semantic code and delivering exceptional user experiences across all
+          devices.
+        </p>
+
+        <nav aria-label="Social media links">
+          <ul data-testid="test-user-social-links">
+            <li>
+              <a
+                href="https://twitter.com/tech_chi_"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="test-user-social-twitter"
+                aria-label="Twitter profile"
+                title="Follow me on Twitter"
+              >
+                <i class="fab fa-twitter" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://linkedin.com/in/azubuikechima"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="test-user-social-linkedin"
+                aria-label="LinkedIn profile"
+                title="Connect on LinkedIn"
+              >
+                <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/socheema"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="test-user-social-github"
+                aria-label="GitHub profile"
+                title="View my GitHub"
+              >
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <section>
+          <h2>Hobbies</h2>
+          <ul data-testid="test-user-hobbies">
+            <li>Open source contributions</li>
+            <li>Reading technical books</li>
+            <li>Going to tech events</li>
+            <li>Swimming</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Dislikes</h2>
+          <ul data-testid="test-user-dislikes">
+            <li>Non-semantic HTML</li>
+            <li>Non-responsive designs</li>
+            <li>Pixel-perfect design debates</li>
+            <li>Blocking CSS/JS resources</li>
+          </ul>
+        </section>
+      </div>
+    </article>
+
+    <script src="/index.js"></script>
+  </body>
+</html>

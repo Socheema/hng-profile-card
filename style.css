@@ -1,0 +1,254 @@
+:root {
+  --primary-color: #6366f1;
+  --secondary-color: #8b5cf6;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --background: #ffffff;
+  --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --border-radius: 16px;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+article[data-testid="test-profile-card"] {
+  background: var(--background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  max-width: 800px;
+  width: 100%;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+/* Desktop Layout */
+@media (min-width: 768px) {
+  article[data-testid="test-profile-card"] {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .profile-header {
+    grid-row: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-lg);
+    background: linear-gradient(
+      135deg,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+    color: white;
+  }
+
+  .profile-content {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 767px) {
+  article[data-testid="test-profile-card"] {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-header {
+    position: relative;
+    flex-direction: row;
+    padding: var(--spacing-md);
+    text-align: center;
+  }
+
+  .profile-content {
+    padding: var(--spacing-md);
+  }
+}
+
+/* Avatar */
+figure {
+  margin: 0;
+  text-align: center;
+}
+
+img[data-testid="test-user-avatar"] {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: var(--transition);
+}
+
+img[data-testid="test-user-avatar"]:hover {
+  transform: scale(1.05);
+}
+
+/* Header and Name */
+header {
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+h1 {
+  font-size: clamp(1rem, 4vw, 2rem);
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+  color: inherit;
+  text-transform: uppercase;
+}
+
+/* Bio */
+p[data-testid="test-user-bio"] {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Time Display */
+.time-display {
+  background: var(--primary-color);
+  color: white;
+  padding: var(--spacing-sm);
+  border-radius: 8px;
+  font-family: "Courier New", monospace;
+  font-size: 0.875rem;
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+/* Lists */
+section {
+  margin-bottom: var(--spacing-lg);
+}
+
+section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: var(--spacing-sm);
+}
+
+ul[data-testid^="test-user-"] {
+  list-style: none;
+  display: grid;
+  gap: var(--spacing-sm);
+  padding: 0;
+}
+
+li {
+  border-radius: 8px;
+  transition: var(--transition);
+  padding: var(--spacing-md);
+}
+
+li:hover {
+  background: #e2e8f0;
+  transform: translateX(4px);
+}
+
+/* Social Links */
+nav ul[data-testid="test-user-social-links"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin: var(--spacing-lg) 0;
+}
+
+nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+nav a i {
+  font-size: 1.2rem;
+}
+
+nav a:hover i,
+nav a:focus i {
+  transform: scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  body {
+    padding: var(--spacing-sm);
+  }
+
+  nav ul[data-testid="test-user-social-links"] {
+    justify-content: flex-start;
+  }
+
+  ul[data-testid^="test-user-"] {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  ul[data-testid="test-user-hobbies"],
+  ul[data-testid="test-user-dislikes"] {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 1rem;
+  background: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* Loading state for time */
+.time-updating {
+  opacity: 0.7;
+}
