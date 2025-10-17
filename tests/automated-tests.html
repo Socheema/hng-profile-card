@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HNG Profile Card - Automated Tests</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background: #f8fafc;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1e293b;
+        }
+        .test-frame {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            background: white;
+        }
+        .results {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            border-left: 4px solid #e2e8f0;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .test-pass {
+            border-color: #10b981;
+            background: #ecfdf5;
+            color: #065f46;
+        }
+        .test-fail {
+            border-color: #ef4444;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+        .test-name {
+            font-weight: 600;
+        }
+        .test-status {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .summary {
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        .run-tests-btn {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .run-tests-btn:hover {
+            background: #5856eb;
+        }
+        .console-output {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧪 HNG Profile Card Automated Tests</h1>
+        <p>Automated validation of all HNG internship requirements</p>
+        <button class="run-tests-btn" onclick="runAllTests()">Run All Tests</button>
+    </div>
+
+    <iframe id="profile-frame" class="test-frame" src="../index.html" onload="loadProfile()"></iframe>
+
+    <div class="results">
+        <h2>Test Results</h2>
+        <div id="test-output"></div>
+        <div id="summary" class="summary" style="display: none;"></div>
+        <div id="console" class="console-output" style="display: none;"></div>
+    </div>
+
+    <script>
+        let profileWindow = null;
+
+        function loadProfile() {
+            profileWindow = document.getElementById('profile-frame').contentWindow;
+        }
+
+        const tests = [
+            {
+                name: 'All required data-testids exist',
+                run: () => {
+                    const requiredIds = [
+                        'test-profile-card', 'test-user-name', 'test-user-bio',
+                        'test-user-time', 'test-user-avatar', 'test-user-social-links',
+                        'test-user-hobbies', 'test-user-dislikes'
+                    ];
+                    return requiredIds.every(id =>
+                        profileWindow && profileWindow.document.querySelector(`[data-testid="${id}"]`)
+                    );
+                }
+            },
+            {
+                name: 'Time displays milliseconds (Date.now())',
+                run: () => {
+                    if (!profileWindow) return false;
+                    const timeEl = profileWindow.document.querySelector('[data-testid="test-user-time"]');
+                    const timeValue = parseInt(timeEl?.textContent || '0');
+                    return !isNaN(timeValue) && timeValue > 1_600_000_000_000; // Unix epoch check
+                }
+            },
+            {
+                name: 'Social links have security attributes',
+                run: () => {
+                    if (!profileWindow) return false;
+                    const links = profileWindow.document.querySelectorAll('[data-testid^="test-user-social-"]');
+                    return Array.from(links).every(link =>
+                        link.target === '_blank' && link.rel.includes('noopener')
+                    );
+                }
+            },
+            {
+                name: 'Avatar has proper alt attribute',
+                run: () => {
+                    if (!profileWindow) return false;
+                    const avatar = profileWindow.document.querySelector('[data-testid="test-user-avatar"]');
+                    return avatar?.alt && avatar.alt.length > 10; // Descriptive alt text
+                }
+            },
+            {
+                name: 'Semantic HTML structure present',
+                run: () => {
+                    if (!profileWindow) return false;
+                    return profileWindow.document.querySelector('article[data-testid="test-profile-card"]') &&
+                           profileWindow.document.querySelector('figure img[data-testid="test-user-avatar"]') &&
+                           profileWindow.document.querySelector('nav[data-testid="test-user-social-links"]') &&
+                           profileWindow.document.querySelectorAll('section').length >= 2;
+                }
+            },
+            {
+                name: 'Accessibility: Skip link exists',
+                run: () => {
+                    if (!profileWindow) return false;
+                    return !!profileWindow.document.querySelector('.skip-link');
+                }
+            },
+            {
+                name: 'Social links are keyboard accessible',
+                run: () => {
+                    if (!profileWindow) return false;
+                    const links = profileWindow.document.querySelectorAll('[data-testid^="test-user-social-"]');
+                    return Array.from(links).every(link => link.tabIndex >= 0);
+                }
+            },
+            {
+                name: 'SEO meta tags present',
+                run: () => {
+                    if (!profileWindow) return false;
+                    const metas = profileWindow.document.querySelectorAll('meta[name="description"], meta[property^="og:"]');
+                    return metas.length >= 5;
+                }
+            }
+        ];
+
+        function runAllTests() {
+            const output = document.getElementById('test-output');
+            const summary = document.getElementById('summary');
+            const consoleDiv = document.getElementById('console');
+
+            output.innerHTML = '<p>🔄 Running tests... Please wait for profile to load.</p>';
+            consoleDiv.style.display = 'none';
+
+            setTimeout(() => {
+                let passed = 0;
+                let total = tests.length;
+                let results = '';
+
+                tests.forEach((test, index) => {
+                    try {
+                        const passedTest = test.run();
+                        const status = passedTest ? '✅ PASS' : '❌ FAIL';
+                        const className = passedTest ? 'test-pass' : 'test-fail';
+
+                        results += `
+                            <div class="test-item ${className}">
+                                <span class="test-name">${index + 1}. ${test.name}</span>
+                                <span class="test-status">${status}</span>
+                            </div>
+                        `;
+
+                        if (passedTest) passed++;
+                    } catch (error) {
+                        results += `
+                            <div class="test-item test-fail">
+                                <span class="test-name">${index + 1}. ${test.name}</span>
+                                <span class="test-status">❌ ERROR: ${error.message}</span>
+                            </div>
+                        `;
+                    }
+                });
+
+                output.innerHTML = results;
+                summary.innerHTML = `
+                    <h3>📊 Test Summary</h3>
+                    <p><strong>${passed}/${total} tests passed</strong></p>
+                    ${passed === total ? '<p>🎉 All HNG requirements met!</p>' : '<p>⚠️ Some tests failed. Check console for details.</p>'}
+                `;
+                summary.style.display = 'block';
+
+                // Log detailed results to console
+                consoleDiv.innerHTML = `<strong>Console Output:</strong><br>${tests.map((t, i) => `${i+1}. ${t.name}: ${t.run() ? 'PASS' : 'FAIL'}`).join('<br>')}`;
+                consoleDiv.style.display = 'block';
+
+            }, 2000); // Wait for iframe to fully load
+        }
+
+        // Auto-run tests after page load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 3000);
+        });
+    </script>
+</body>
+</html>
