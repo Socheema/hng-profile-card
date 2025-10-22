@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | Azubuike Chima</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav aria-label="Main navigation" class="main-nav">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Me</a></li>
+      <li><a href="contact.html" aria-current="page">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h1>Contact Me</h1>
+    <form id="contact-form" novalidate>
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" data-testid="test-contact-name" required />
+        <p id="error-name" data-testid="test-contact-error-name" class="error-msg" aria-live="polite"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" data-testid="test-contact-email" required />
+        <p id="error-email" data-testid="test-contact-error-email" class="error-msg" aria-live="polite"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" data-testid="test-contact-subject" required />
+        <p id="error-subject" data-testid="test-contact-error-subject" class="error-msg" aria-live="polite"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" rows="5" data-testid="test-contact-message" required></textarea>
+        <p id="error-message" data-testid="test-contact-error-message" class="error-msg" aria-live="polite"></p>
+      </div>
+
+      <button type="submit" data-testid="test-contact-submit">Send Message</button>
+
+      <p id="success" data-testid="test-contact-success" class="success-msg" role="alert"></p>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById('contact-form');
+    const successMsg = document.getElementById('success');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      successMsg.textContent = '';
+      let isValid = true;
+
+      // Clear previous errors
+      document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
+
+      const name = document.getElementById('fullName');
+      const email = document.getElementById('email');
+      const subject = document.getElementById('subject');
+      const message = document.getElementById('message');
+
+      if (!name.value.trim()) {
+        document.getElementById('error-name').textContent = 'Full name is required.';
+        isValid = false;
+      }
+
+      const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      if (!emailPattern.test(email.value)) {
+        document.getElementById('error-email').textContent = 'Please enter a valid email address.';
+        isValid = false;
+      }
+
+      if (!subject.value.trim()) {
+        document.getElementById('error-subject').textContent = 'Subject is required.';
+        isValid = false;
+      }
+
+      if (message.value.trim().length < 10) {
+        document.getElementById('error-message').textContent = 'Message must be at least 10 characters.';
+        isValid = false;
+      }
+
+      if (isValid) {
+        form.reset();
+        successMsg.textContent = '✅ Your message has been sent successfully!';
+      }
+    });
+  </script>
+</body>
+</html>

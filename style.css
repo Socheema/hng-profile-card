@@ -23,14 +23,55 @@ body {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: var(--spacing-md);
+  /* padding: var(--spacing-md); */
   color: var(--text-primary);
   line-height: 1.6;
 }
 
-article[data-testid="test-profile-card"] {
+main {
+  padding-left: 3rem;
+  padding-right: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+h1 {
+  text-align: center;
+}
+
+/* Main navigation (was nested inside body) */
+.main-nav {
+  width: 80%;
+  margin-bottom: 2rem;
+}
+
+.main-nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav ul li {
+  list-style: none;
+}
+
+.main-nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  width: max-content;
+  background-color: none !important;
+}
+
+article[data-testid="test-profile-card"],
+main {
   background: var(--background);
   border-radius: var(--border-radius);
   box-shadow: var(--card-shadow);
@@ -38,6 +79,70 @@ article[data-testid="test-profile-card"] {
   width: 100%;
   overflow: hidden;
   transition: var(--transition);
+}
+main {
+  color: #5d5f60;
+  h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    padding: 2rem;
+  }
+}
+
+form {
+  width: 100%;
+  max-width: 600px;
+  background: var(--background);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  margin: auto;
+}
+
+form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--spacing-md);
+}
+form label {
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 8px;
+}
+form input,
+form textarea {
+  padding: 0.5rem;
+  border: 0.2px solid #f4f4f4;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+form button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+form button:hover {
+  background: var(--secondary-color);
+}
+
+#error-name,
+#error-message,
+#error-subject,
+#error-email {
+  color: red;
+  font-size: 0.4rem;
+  margin-top: 0.2rem;
 }
 
 /* Desktop Layout */
@@ -180,7 +285,7 @@ nav ul[data-testid="test-user-social-links"] {
   margin: var(--spacing-lg) 0;
 }
 
-nav a {
+nav ul li a [data-testid="test-user-social-links"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -251,4 +356,19 @@ nav a:focus i {
 /* Loading state for time */
 .time-updating {
   opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  main {
+    padding: 1rem;
+  }
+
+  form {
+    width: 100%;
+  }
 }
